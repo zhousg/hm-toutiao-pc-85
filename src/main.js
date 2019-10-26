@@ -8,6 +8,9 @@ import 'element-ui/lib/theme-chalk/index.css'
 // 2. @ 别名  指定的是 /src 路径  一个绝对路径。 基于webpack
 import router from '@/router'
 
+import axios from '@/api'
+Vue.prototype.$http = axios
+
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
