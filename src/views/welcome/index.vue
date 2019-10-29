@@ -7,13 +7,14 @@
 <script>
 export default {
   // 测试
-  created () {
-    this.$http.get('articles').then(res => {
-      console.log(res.data)
-    }).catch(() => {
-      console.log('error')
-    })
-  }
+  // created () {
+  //   this.$http.get('articles').then(res => {
+
+  //     console.log(res.data)
+  //   }).catch(() => {
+  //     console.log('error')
+  //   })
+  // }
 }
 </script>
 

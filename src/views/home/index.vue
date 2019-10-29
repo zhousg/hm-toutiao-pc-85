@@ -51,15 +51,15 @@
         <!-- 文字 -->
         <span class="text">江苏传智播客科技教育有限公司</span>
         <!-- 下拉菜单组件 -->
-        <el-dropdown class="dropdown">
+        <el-dropdown class="dropdown" @command="handleClick">
           <span class="el-dropdown-link">
-            <img class="headIcon" src="../../assets/avatar.jpg" alt />
-            <span class="userName">用户名</span>
+            <img class="headIcon" :src="photo" alt />
+            <span class="userName">{{name}}</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-setting">个人设置</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-unlock">退出登录</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-setting" command="setting">个人设置</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-unlock" command="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -72,17 +72,45 @@
 </template>
 
 <script>
+import local from '@/utils/local'
 export default {
   data () {
     return {
       // 是不是展开的
-      isOpen: true
+      isOpen: true,
+      // 头像
+      photo: '',
+      // 名称
+      name: ''
     }
+  },
+  created () {
+    const user = local.getUser() || {}
+    this.photo = user.photo
+    this.name = user.name
   },
   methods: {
     toggleMenu () {
       // 切换侧边栏  展开与收起
       this.isOpen = !this.isOpen
+    },
+    // 绑定的click事件无效
+    // 给的是element-ui提供的组件绑定的click事件，如果组件不支持click事件，无法触发。
+    // 组件不支持，给组件解析后的DOM绑定事件
+    // vue提供了事件修饰符功能，prevent once stop --- native 把事件绑定在原生DOM上
+    setting () {
+      this.$router.push('/setting')
+    },
+    logout () {
+      local.delUser()
+      this.$router.push('/login')
+    },
+    handleClick (command) {
+      // command  值  setting | logout
+      // 根据 command 值去执行不同的业务
+      this[command]()
+      // this.setting() === command setting
+      // this.logout() === command logout
     }
   }
 }
