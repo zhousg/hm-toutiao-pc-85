@@ -9,6 +9,12 @@ import 'element-ui/lib/theme-chalk/index.css'
 import router from '@/router'
 
 import axios from '@/api'
+
+// import MyBread from '@/components/my-bread'
+// Vue.component('my-bread', MyBread)
+import plugin from '@/components'
+Vue.use(plugin)
+
 Vue.prototype.$http = axios
 
 Vue.use(ElementUI)
