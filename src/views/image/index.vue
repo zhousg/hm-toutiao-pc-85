@@ -12,7 +12,7 @@
           <el-radio-button :label="false">全部</el-radio-button>
           <el-radio-button :label="true">收藏</el-radio-button>
         </el-radio-group>
-        <el-button @click="dialogVisible=true" style="float:right" type="success" size="small">添加素材</el-button>
+        <el-button @click="open" style="float:right" type="success" size="small">添加素材</el-button>
       </div>
       <!-- 素材区域 -->
       <div class="img_list">
@@ -40,9 +40,15 @@
     </el-card>
     <!-- 对话框 -->
     <el-dialog title="添加素材" :visible.sync="dialogVisible" width="300px">
+      <!-- action 是图片上传的接口地址 -->
+      <!-- header 上传组件的请求头 -->
+      <!-- name 提交文件的字段名称  需要和后台保持一致  -->
       <el-upload
         class="avatar-uploader"
-        action="https://jsonplaceholder.typicode.com/posts/"
+        action="http://ttapi.research.itcast.cn/mp/v1_0/user/images"
+        :headers="headers"
+        name="image"
+        :on-success="handleSuccess"
         :show-file-list="false"
       >
         <img v-if="imageUrl" :src="imageUrl" class="avatar" />
@@ -53,6 +59,7 @@
 </template>
 
 <script>
+import local from '@/utils/local'
 export default {
   data () {
     return {
@@ -69,13 +76,37 @@ export default {
       // 控制对话框 显示与隐藏
       dialogVisible: false,
       // 上传成功后的图片地址
-      imageUrl: null
+      imageUrl: null,
+      // 请求头
+      headers: {
+        Authorization: `Bearer ${local.getUser().token}`
+      }
     }
   },
   created () {
     this.getImages()
   },
   methods: {
+    // 打开对话框
+    open () {
+      this.dialogVisible = true
+      this.imageUrl = null
+    },
+    // 上传图片成功
+    handleSuccess (res) {
+      // res 就是响应主体  res.data.url 就是图片地址
+      // 预览
+      this.imageUrl = res.data.url
+      // 提示
+      this.$message.success('上传成功')
+      window.setTimeout(() => {
+        // 关闭
+        this.dialogVisible = false
+        // 更新列表
+        this.getImages()
+      }, 2000)
+    },
+    // 获取素材列表
     async getImages () {
       // 获取数据
       const {
