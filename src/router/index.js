@@ -9,6 +9,7 @@ import NotFound from '@/views/404'
 import Article from '@/views/article'
 import Image from '@/views/image'
 import Publish from '@/views/publish'
+import Comment from '@/views/comment'
 
 Vue.use(VueRouter)
 
@@ -28,7 +29,9 @@ const router = new VueRouter({
         // 素材
         { path: '/image', component: Image },
         // 发布
-        { path: '/publish', component: Publish }
+        { path: '/publish', component: Publish },
+        // 评论
+        { path: '/comment', component: Comment }
       ]
     },
     // 404处理
