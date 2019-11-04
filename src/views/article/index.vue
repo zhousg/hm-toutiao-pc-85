@@ -102,7 +102,7 @@ export default {
       // 由axios进行数据提交，字段的值null，axios是不会提交该字段
       reqParams: {
         status: null,
-        channel_id: 2,
+        channel_id: null,
         begin_pubdate: null,
         end_pubdate: null,
         // 当前页码
